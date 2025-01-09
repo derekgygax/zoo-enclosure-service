@@ -2,6 +2,10 @@
 
 The `enclosure-service` is a Spring Boot microservice designed to manage the enclosures within a zoo. It provides functionality to create, update, retrieve, and delete enclosures while ensuring secure access through JWT-based authentication.
 
+This project uses Quarkus, the Supersonic Subatomic Java Framework.
+
+If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+
 ## Features
 
 - Manage enclosures in the zoo:
@@ -11,13 +15,12 @@ The `enclosure-service` is a Spring Boot microservice designed to manage the enc
   - Delete enclosures.
 - Secure API endpoints using Spring Security with JWT authentication.
 - Integration with PostgreSQL as the production database.
-- In-memory H2 database for development and testing.
 
 ## Requirements
 
-- Java 17
-- Maven 3.6+
-- PostgreSQL (for production)
+- Java 21
+- Maven 3.9.9
+- PostgreSQL
 
 ## Setup
 
@@ -29,31 +32,72 @@ cd zoo-enclosure-service
 
 ### Configuration
 
-Update the `application.properties` or `application.yml` file with your database and security configurations.
+Update the `application.properties` file with your database and security configurations.
 
 For example:
 ```properties
 # Database configuration
-spring.datasource.url=jdbc:postgresql://localhost:5432/zoo_enclosures
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:5432/zoo_enclosures
+quarkus.datasource.username=your_username
+quarkus.datasource.password=your_password
 
 # JWT Configuration
 jwt.secret=your_jwt_secret
 jwt.expiration=3600000
 ```
 
-### Build and Run
+## Build and Run
 
-#### Build the Application
-```bash
-mvn clean install
+### Running the application in dev mode
+
+You can run your application in dev mode that enables live coding using:
+
+```shell script
+./mvnw quarkus:dev
 ```
 
-#### Run the Application
-```bash
-mvn spring-boot:run
+> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+
+
+### Packaging and running the application
+
+The application can be packaged using:
+
+```shell script
+./mvnw package
 ```
+
+It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
+Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+
+The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+
+If you want to build an _über-jar_, execute the following command:
+
+```shell script
+./mvnw package -Dquarkus.package.jar.type=uber-jar
+```
+
+The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+
+
+### Creating a native executable
+
+You can create a native executable using:
+
+```shell script
+./mvnw package -Dnative
+```
+
+Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+
+```shell script
+./mvnw package -Dnative -Dquarkus.native.container-build=true
+```
+
+You can then execute your native executable with: `./target/enclosure-service-0.0.1-SNAPSHOT-runner`
+
+If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
 
 The application will start on `http://localhost:8080` by default.
 
@@ -89,16 +133,32 @@ The application will start on `http://localhost:8080` by default.
 
 ## Running Tests
 
-Run unit and integration tests using:
+This project uses **JUnit 5** for unit testing and **REST Assured** for API testing. Quarkus simplifies testing with built-in support for fast execution and seamless integration.
+
+### Running Unit Tests
+- Run all unit tests:
+  ```bash
+  ./mvnw test
+  ```
+
+### Running Integration Tests
+- Run integration tests with:
+  ```bash
+  ./mvnw verify
+  ```
+
+### Dev Mode
+In **dev mode**, tests automatically re-run when code changes:
 ```bash
-mvn test
+./mvnw quarkus:dev
 ```
+
+All tests are located in the `src/test/java` directory.
 
 ## Development
 
 ### Database
-- **H2**: Used for development and testing (in-memory).
-- **PostgreSQL**: Used for production.
+- PostgreSQL
 
 ### Authentication
 - JWT (JSON Web Token) is used for securing API endpoints. Make sure to configure the `jwt.secret` in `application.properties`.
@@ -126,54 +186,6 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
-## Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
-
-```shell script
-./mvnw quarkus:dev
-```
-
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
-
-## Packaging and running the application
-
-The application can be packaged using:
-
-```shell script
-./mvnw package
-```
-
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/enclosure-service-0.0.1-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
 
 ## Related Guides
 
