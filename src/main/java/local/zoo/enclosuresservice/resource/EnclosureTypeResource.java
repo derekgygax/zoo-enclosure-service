@@ -3,8 +3,8 @@ package local.zoo.enclosuresservice.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import local.zoo.enclosuresservice.dto.EnclosureTypeBase;
 import local.zoo.enclosuresservice.model.EnclosureType;
-import local.zoo.enclosuresservice.repository.EnclosureTypeRepository;
 import local.zoo.enclosuresservice.service.EnclosureTypeService;
 
 import java.util.List;
@@ -34,8 +34,8 @@ public class EnclosureTypeResource {
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addEnclosureType(EnclosureType enclosureType) {
-        this.enclosureTypeService.createEnclosureType(enclosureType);
+    public void addEnclosureType(EnclosureTypeBase enclosureTypeBase) {
+        this.enclosureTypeService.createEnclosureType(enclosureTypeBase);
     }
 
 }

@@ -3,6 +3,7 @@ package local.zoo.enclosuresservice.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import local.zoo.enclosuresservice.dto.EnclosureTypeBase;
 import local.zoo.enclosuresservice.model.EnclosureType;
 import local.zoo.enclosuresservice.repository.EnclosureTypeRepository;
 
@@ -34,7 +35,11 @@ public class EnclosureTypeService {
 
     // You need the Transactional so that something happens in the DB!!!
     @Transactional
-    public void createEnclosureType(EnclosureType enclosureType) {
+    public void createEnclosureType(EnclosureTypeBase enclosureTypeBase) {
+        EnclosureType enclosureType = new EnclosureType(
+                enclosureTypeBase.type(),
+                enclosureTypeBase.description()
+        );
         this.enclosureTypeRepository.persist(enclosureType);
     }
 }

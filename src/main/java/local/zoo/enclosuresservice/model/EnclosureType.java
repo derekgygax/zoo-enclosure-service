@@ -2,6 +2,7 @@ package local.zoo.enclosuresservice.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,9 +17,13 @@ public class EnclosureType extends PanacheEntityBase {
 
     @Id
     @Column(length = 100, nullable = false, unique = true)
+    @Schema(required = true, title = "Enclosure Type", description = "The type of the enclosure", maxLength = 100)
     private String type;
 
-    @Column(length = 500)
+    @Column(length = 500, nullable = false)
+    // TODO
+    // YOU CAN PUT FORMAT IN HERE!! This is how you do what you did in python!!
+    @Schema(required = true, title = "Enclosure Type Description", description = "Description of the type", maxLength = 500)
     private String description;
 
     @CreationTimestamp
