@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "enclosure_type")
@@ -36,6 +37,8 @@ public class EnclosureType extends PanacheEntityBase {
     // Use Instant for UTC timestamps
     private Instant updatedAt;
 
+    @OneToMany(mappedBy = "enclosureType", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Enclosure> enclosures;
 
     @PrePersist
     @PreUpdate

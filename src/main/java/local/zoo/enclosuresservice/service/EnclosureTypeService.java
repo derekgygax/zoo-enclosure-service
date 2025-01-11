@@ -35,11 +35,10 @@ public class EnclosureTypeService {
 
     // You need the Transactional so that something happens in the DB!!!
     @Transactional
-    public void createEnclosureType(EnclosureTypeBase enclosureTypeBase) {
+    public void addEnclosureType(EnclosureTypeBase enclosureTypeBase) {
         EnclosureType enclosureType = new EnclosureType(
                 enclosureTypeBase.type(),
-                enclosureTypeBase.description()
-        );
+                enclosureTypeBase.description());
         this.enclosureTypeRepository.persist(enclosureType);
     }
 }

@@ -9,11 +9,14 @@ import java.util.List;
 @ApplicationScoped
 public class EnclosureTypeRepository implements PanacheRepository<EnclosureType> {
 
-
     public List<String> findAllTypes() {
         return this.getEntityManager()
                 .createQuery("SELECT e.type FROM EnclosureType e", String.class)
                 .getResultList();
+    }
+
+    public EnclosureType findByType(String type) {
+        return find("type", type).firstResult();
     }
 
 }
