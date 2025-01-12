@@ -7,7 +7,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.core.MediaType;
-import local.zoo.enclosuresservice.dto.EnclosureTypeBase;
+import local.zoo.enclosuresservice.dto.enclosureType.EnclosureTypeBase;
 import local.zoo.enclosuresservice.model.EnclosureType;
 import local.zoo.enclosuresservice.service.EnclosureTypeService;
 

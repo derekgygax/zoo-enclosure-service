@@ -1,4 +1,4 @@
-package local.zoo.enclosuresservice.dto;
+package local.zoo.enclosuresservice.dto.enclosureType;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 

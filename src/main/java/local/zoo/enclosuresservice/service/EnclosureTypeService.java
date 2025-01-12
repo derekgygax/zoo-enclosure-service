@@ -3,7 +3,7 @@ package local.zoo.enclosuresservice.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import local.zoo.enclosuresservice.dto.EnclosureTypeBase;
+import local.zoo.enclosuresservice.dto.enclosureType.EnclosureTypeBase;
 import local.zoo.enclosuresservice.model.EnclosureType;
 import local.zoo.enclosuresservice.repository.EnclosureTypeRepository;
 

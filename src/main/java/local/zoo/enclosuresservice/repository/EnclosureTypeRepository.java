@@ -11,7 +11,7 @@ public class EnclosureTypeRepository implements PanacheRepositoryBase<EnclosureT
 
     public List<String> findAllIds() {
         return this.getEntityManager()
-                .createQuery("SELECT e.id FROM EnclosureType e", String.class)
+                .createQuery("SELECT et.id FROM EnclosureType et", String.class)
                 .getResultList();
     }
 

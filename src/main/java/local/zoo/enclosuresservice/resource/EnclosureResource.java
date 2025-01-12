@@ -10,7 +10,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import local.zoo.enclosuresservice.service.EnclosureService;
-import local.zoo.enclosuresservice.dto.EnclosureBase;
+import local.zoo.enclosuresservice.dto.enclosure.EnclosureBase;
+import local.zoo.enclosuresservice.dto.enclosure.EnclosureIdentifier;
 // models
 import local.zoo.enclosuresservice.model.Enclosure;
 
@@ -29,6 +30,20 @@ public class EnclosureResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Enclosure> getEnclosures() {
         return this.enclosureService.getAllEnclosures();
+    }
+
+    @GET
+    @Path("identifiers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<EnclosureIdentifier> getEnclosureIdentifiers() {
+        return this.enclosureService.getAllEnclosureIdentifiers();
+    }
+
+    @GET
+    @Path("bases/{enclosureId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public EnclosureBase getEnclosureBaseById(@PathParam("enclosureId") UUID enclosureId) {
+        return this.enclosureService.getEnclosureBaseById(enclosureId);
     }
 
     // POST METHODS
