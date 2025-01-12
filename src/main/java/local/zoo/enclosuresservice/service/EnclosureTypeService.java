@@ -15,6 +15,18 @@ public class EnclosureTypeService {
     @Inject
     EnclosureTypeRepository enclosureTypeRepository;
 
+    // Get the enclosure type based on the key
+    // passed in as a string
+    public EnclosureType getEnclosureTypeByKey(String type) {
+
+        EnclosureType enclosureType = this.enclosureTypeRepository.findByType(type);
+        if (enclosureType == null) {
+            throw new IllegalArgumentException(
+                    "Enclosure type '" + type + "' does not exist.");
+        }
+        return enclosureType;
+    }
+
     /**
      * Retrieve all EnclosureType objects.
      *

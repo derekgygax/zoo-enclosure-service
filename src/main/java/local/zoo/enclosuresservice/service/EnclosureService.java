@@ -1,15 +1,16 @@
 package local.zoo.enclosuresservice.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import local.zoo.enclosuresservice.dto.EnclosureBase;
 import local.zoo.enclosuresservice.model.Enclosure;
 import local.zoo.enclosuresservice.model.EnclosureType;
 import local.zoo.enclosuresservice.repository.EnclosureRepository;
-import local.zoo.enclosuresservice.repository.EnclosureTypeRepository;
 
 @ApplicationScoped
 public class EnclosureService {
@@ -17,7 +18,16 @@ public class EnclosureService {
     @Inject
     EnclosureRepository enclosureRepository;
     @Inject
-    EnclosureTypeRepository enclosureTypeRepository;
+    EnclosureTypeService enclosureTypeService;
+
+    // Get the Enclosure by ID from the DB
+    public Enclosure getEnclosureById(UUID enclosureId) {
+        Enclosure enclosure = this.enclosureRepository.findById(enclosureId);
+        if (enclosure == null) {
+            throw new EntityNotFoundException("Enclosure not found with ID: " + enclosureId);
+        }
+        return enclosure;
+    }
 
     /**
      * Retrieve all Enclosure objects.
@@ -36,13 +46,11 @@ public class EnclosureService {
     @Transactional
     public void addEnclosure(EnclosureBase enclosureBase) {
 
-        // first ensure the enclosure type passed back was real
-        // if that type isn't found then return an error
-        EnclosureType enclosureType = this.enclosureTypeRepository.findByType(enclosureBase.enclosureType());
-        if (enclosureType == null) {
-            throw new IllegalArgumentException(
-                    "Enclosure type '" + enclosureBase.enclosureType() + "' does not exist.");
-        }
+        // Get the actual enclosure type based on the enclosureBase type
+        // this was a string passed in
+        // This function does a check it exists and throws an error
+        EnclosureType enclosureType = this.enclosureTypeService
+                .getEnclosureTypeByKey(enclosureBase.enclosureType());
 
         Enclosure enclosure = new Enclosure(
                 enclosureType,
@@ -51,5 +59,34 @@ public class EnclosureService {
                 enclosureBase.status());
 
         this.enclosureRepository.persist(enclosure);
+    }
+
+    /**
+     * Update an Enclosure objects.
+     *
+     * @return void
+     */
+
+    @Transactional
+    public void updateEnclosure(UUID enclosureId, EnclosureBase updatedEnclosureBase) {
+
+        // Get the enclosure type
+        // Uses the "key" string in EnclosureBase
+        EnclosureType updatedEnclosureType = this.enclosureTypeService
+                .getEnclosureTypeByKey(updatedEnclosureBase.enclosureType());
+
+        // Get the existing Enclosure by id
+        Enclosure existingEnclosure = getEnclosureById(enclosureId);
+
+        // Update the fields in the database
+        // you can directly use the updatedEnclosureBase
+        // for everything but the type
+        existingEnclosure.setName(updatedEnclosureBase.name());
+        existingEnclosure.setEnclosureType(updatedEnclosureType);
+        existingEnclosure.setCapacity(updatedEnclosureBase.capacity());
+        existingEnclosure.setStatus(updatedEnclosureBase.status());
+
+        // Save the updated enclosure
+        this.enclosureRepository.persist(existingEnclosure);
     }
 }

@@ -4,7 +4,9 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import local.zoo.enclosuresservice.service.EnclosureService;
@@ -13,6 +15,7 @@ import local.zoo.enclosuresservice.dto.EnclosureBase;
 import local.zoo.enclosuresservice.model.Enclosure;
 
 import java.util.List;
+import java.util.UUID;
 
 @Path("/api/v1/enclosures")
 public class EnclosureResource {
@@ -34,5 +37,13 @@ public class EnclosureResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public void addEnclosure(EnclosureBase enclosureBase) {
         this.enclosureService.addEnclosure(enclosureBase);
+    }
+
+    // PUT METHODS
+    @PUT
+    @Path("/{enclosureId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateEnclosure(@PathParam("enclosureId") UUID enclosureId, EnclosureBase updatedEnclosureBase) {
+        this.enclosureService.updateEnclosure(enclosureId, updatedEnclosureBase);
     }
 }
