@@ -28,10 +28,10 @@ public class EnclosureTypeResource {
     }
 
     @GET
-    @Path("/keys")
+    @Path("/ids")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> getEnclosureTypeKeys() {
-        return this.enclosureTypeService.getAllEnclosureTypeKeys();
+    public List<String> getEnclosureTypeIds() {
+        return this.enclosureTypeService.getAllEnclosureTypeIds();
     }
 
     // POST METHODS

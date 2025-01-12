@@ -1,22 +1,18 @@
 package local.zoo.enclosuresservice.repository;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import local.zoo.enclosuresservice.model.EnclosureType;
 
 import java.util.List;
 
 @ApplicationScoped
-public class EnclosureTypeRepository implements PanacheRepository<EnclosureType> {
+public class EnclosureTypeRepository implements PanacheRepositoryBase<EnclosureType, String> {
 
-    public List<String> findAllTypes() {
+    public List<String> findAllIds() {
         return this.getEntityManager()
-                .createQuery("SELECT e.type FROM EnclosureType e", String.class)
+                .createQuery("SELECT e.id FROM EnclosureType e", String.class)
                 .getResultList();
-    }
-
-    public EnclosureType findByType(String type) {
-        return find("type", type).firstResult();
     }
 
 }

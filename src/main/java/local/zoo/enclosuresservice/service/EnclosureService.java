@@ -29,20 +29,10 @@ public class EnclosureService {
         return enclosure;
     }
 
-    /**
-     * Retrieve all Enclosure objects.
-     *
-     * @return List of Enclosure
-     */
     public List<Enclosure> getAllEnclosures() {
         return this.enclosureRepository.listAll();
     }
 
-    /**
-     * Add a new Enclosure objects.
-     *
-     * @return void
-     */
     @Transactional
     public void addEnclosure(EnclosureBase enclosureBase) {
 
@@ -50,7 +40,7 @@ public class EnclosureService {
         // this was a string passed in
         // This function does a check it exists and throws an error
         EnclosureType enclosureType = this.enclosureTypeService
-                .getEnclosureTypeByKey(enclosureBase.enclosureType());
+                .getEnclosureTypeById(enclosureBase.enclosureTypeId());
 
         Enclosure enclosure = new Enclosure(
                 enclosureType,
@@ -61,19 +51,13 @@ public class EnclosureService {
         this.enclosureRepository.persist(enclosure);
     }
 
-    /**
-     * Update an Enclosure objects.
-     *
-     * @return void
-     */
-
     @Transactional
     public void updateEnclosure(UUID enclosureId, EnclosureBase updatedEnclosureBase) {
 
         // Get the enclosure type
         // Uses the "key" string in EnclosureBase
         EnclosureType updatedEnclosureType = this.enclosureTypeService
-                .getEnclosureTypeByKey(updatedEnclosureBase.enclosureType());
+                .getEnclosureTypeById(updatedEnclosureBase.enclosureTypeId());
 
         // Get the existing Enclosure by id
         Enclosure existingEnclosure = getEnclosureById(enclosureId);

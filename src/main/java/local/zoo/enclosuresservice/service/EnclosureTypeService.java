@@ -17,39 +17,29 @@ public class EnclosureTypeService {
 
     // Get the enclosure type based on the key
     // passed in as a string
-    public EnclosureType getEnclosureTypeByKey(String type) {
+    public EnclosureType getEnclosureTypeById(String id) {
 
-        EnclosureType enclosureType = this.enclosureTypeRepository.findByType(type);
+        EnclosureType enclosureType = this.enclosureTypeRepository.findById(id);
         if (enclosureType == null) {
             throw new IllegalArgumentException(
-                    "Enclosure type '" + type + "' does not exist.");
+                    "Enclosure type '" + id + "' does not exist.");
         }
         return enclosureType;
     }
 
-    /**
-     * Retrieve all EnclosureType objects.
-     *
-     * @return List of EnclosureType
-     */
     public List<EnclosureType> getAllEnclosureTypes() {
         return this.enclosureTypeRepository.listAll();
     }
 
-    /**
-     * Retrieve all enclosure type keys (type column).
-     *
-     * @return List of Strings representing the type values
-     */
-    public List<String> getAllEnclosureTypeKeys() {
-        return this.enclosureTypeRepository.findAllTypes();
+    public List<String> getAllEnclosureTypeIds() {
+        return this.enclosureTypeRepository.findAllIds();
     }
 
     // You need the Transactional so that something happens in the DB!!!
     @Transactional
     public void addEnclosureType(EnclosureTypeBase enclosureTypeBase) {
         EnclosureType enclosureType = new EnclosureType(
-                enclosureTypeBase.type(),
+                enclosureTypeBase.id(),
                 enclosureTypeBase.description());
         this.enclosureTypeRepository.persist(enclosureType);
     }

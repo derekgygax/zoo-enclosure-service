@@ -6,6 +6,9 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+// import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.time.Instant;
 import java.util.List;
 
@@ -17,9 +20,9 @@ import java.util.List;
 public class EnclosureType extends PanacheEntityBase {
 
     @Id
-    @Column(length = 100, nullable = false, unique = true)
-    @Schema(required = true, title = "Enclosure Type", description = "The type of the enclosure", maxLength = 100)
-    private String type;
+    @Column(length = 100, nullable = false)
+    @Schema(required = true, title = "Enclosure Type", description = "Unique identifier for the enclosure type, such as 'jungle', 'desert', or 'aquarium'.", maxLength = 100, examples = "jungle")
+    private String id;
 
     @Column(length = 500, nullable = false)
     // TODO
@@ -38,32 +41,33 @@ public class EnclosureType extends PanacheEntityBase {
     private Instant updatedAt;
 
     @OneToMany(mappedBy = "enclosureType", cascade = CascadeType.ALL, orphanRemoval = false)
+    // This is so that the endpoint for enclosures-types can get the enclosures
+    // usign that type without endless loop.
+    // NEEDS: @JsonBackReference on private EnclosureType enclosureType;
+    // @JsonManagedReference
+    // This makes sure you don't do an endless loop of retrieval
+    @JsonIgnore
     private List<Enclosure> enclosures;
 
     @PrePersist
     @PreUpdate
-    // ensure the type is ALWAYS lowercase
+    // ensure the id for the type is ALWAYS lowercase
     protected void ensureLowercaseType() {
-        this.type = this.type.toLowerCase();
+        this.id = this.id.toLowerCase();
     }
 
     public EnclosureType() {
         // Default constructor
     }
 
-    public EnclosureType(String type, String description) {
-        // Ensure name is stored in lowercase
-        this.type = type.toLowerCase();
+    public EnclosureType(String id, String description) {
+        // Ensure the id for the type is stored in lowercase
+        this.id = id.toLowerCase();
         this.description = description;
     }
 
-    public String getType() {
-        return this.type;
-    }
-
-    public void setType(String type) {
-        // Ensure name is stored in lowercase
-        this.type = type.toLowerCase();
+    public String getId() {
+        return id;
     }
 
     public String getDescription() {
@@ -82,13 +86,23 @@ public class EnclosureType extends PanacheEntityBase {
         return updatedAt;
     }
 
+    public List<Enclosure> getEnclosures() {
+        return enclosures;
+    }
+
     @Override
     public String toString() {
         return "EnclosureType{" +
-                "type='" + type + '\'' +
+                "id='" + id + '\'' +
                 ", description='" + description + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
+    // TODO how to do indexing
+    // @Table(name = "enclosure_type", indexes = {
+    // @Index(name = "idx_enclosure_type_id", columnList = "id")
+    // });
+
 }

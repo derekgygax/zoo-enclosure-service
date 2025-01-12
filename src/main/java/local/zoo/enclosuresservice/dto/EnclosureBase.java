@@ -8,7 +8,7 @@ public record EnclosureBase(
 
         @Schema(required = true, title = "Name", description = "Name of the enclosure", maxLength = 100) String name,
 
-        @Schema(required = true, format = "selector", title = "Enclosure Type", description = "The type of the enclosure") String enclosureType,
+        @Schema(required = true, format = "selector", title = "Enclosure Type", description = "The type of the enclosure, such as 'jungle', 'desert', or 'aquarium'") String enclosureTypeId,
 
         @Schema(required = true, minimum = "0", title = "Capacity", description = "The maximum number of animals the enclosure can hold") int capacity,
 

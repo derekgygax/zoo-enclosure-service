@@ -7,6 +7,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+// import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.persistence.Column;
@@ -38,8 +40,12 @@ public class Enclosure extends PanacheEntityBase {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "enclosure_type", referencedColumnName = "type", nullable = false)
-    @Schema(required = true, format = "selector", title = "Enclosure Type", description = "The type of the enclosure")
+    @JoinColumn(name = "enclosure_type_id", referencedColumnName = "id", nullable = false)
+    @Schema(required = true, format = "selector", title = "Enclosure Type", description = "The type of the enclosure, such as 'jungle', 'desert', or 'aquarium'")
+    // so that the endpoint for enclosures-types can get the enclosures
+    // usign that type without endless loop.
+    // NEEDS: @JsonManagedReference on private List<Enclosure> enclosures;
+    // @JsonBackReference
     private EnclosureType enclosureType;
 
     @Column(name = "capacity", nullable = false)
