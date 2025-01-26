@@ -3,7 +3,6 @@ package local.zoo.enclosuresservice.model;
 import java.time.Instant;
 import java.util.UUID;
 
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,6 +21,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.ForeignKey;
 
 // enums
 import local.zoo.enclosuresservice.enums.EnclosureStatus;
@@ -32,16 +33,13 @@ public class Enclosure extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, unique = true, updatable = false)
-    @Schema(required = true, title = "Enclosure ID", description = "Unique identifier for the enclosure")
     private UUID id;
 
     @Column(name = "name", nullable = false, length = 100)
-    @Schema(required = true, title = "Name", description = "Name of the enclosure", maxLength = 100)
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "enclosure_type_id", referencedColumnName = "id", nullable = false)
-    @Schema(required = true, format = "selector", title = "Enclosure Type", description = "The type of the enclosure, such as 'jungle', 'desert', or 'aquarium'")
+    @JoinColumn(name = "enclosure_type_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     // so that the endpoint for enclosures-types can get the enclosures
     // usign that type without endless loop.
     // NEEDS: @JsonManagedReference on private List<Enclosure> enclosures;
@@ -50,12 +48,10 @@ public class Enclosure extends PanacheEntityBase {
 
     @Column(name = "capacity", nullable = false)
     @PositiveOrZero
-    @Schema(required = true, minimum = "0", title = "Capacity", description = "The maximum number of animals the enclosure can hold")
     private int capacity;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    @Schema(required = true, title = "Status", description = "The current status of the enclosure")
     private EnclosureStatus status;
 
     @CreationTimestamp

@@ -2,8 +2,9 @@ package local.zoo.enclosuresservice.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,13 +22,9 @@ public class EnclosureType extends PanacheEntityBase {
 
     @Id
     @Column(length = 100, nullable = false)
-    @Schema(required = true, title = "Enclosure Type", description = "Unique identifier for the enclosure type, such as 'jungle', 'desert', or 'aquarium'.", maxLength = 100, examples = "jungle")
     private String id;
 
     @Column(length = 500, nullable = false)
-    // TODO
-    // YOU CAN PUT FORMAT IN HERE!! This is how you do what you did in python!!
-    @Schema(required = true, title = "Enclosure Type Description", description = "Description of the type", maxLength = 500)
     private String description;
 
     @CreationTimestamp
@@ -40,7 +37,9 @@ public class EnclosureType extends PanacheEntityBase {
     // Use Instant for UTC timestamps
     private Instant updatedAt;
 
-    @OneToMany(mappedBy = "enclosureType", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OnDelete(action = OnDeleteAction.RESTRICT)
+    @OneToMany(mappedBy = "enclosureType", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.REFRESH }, orphanRemoval = true)
     // This is so that the endpoint for enclosures-types can get the enclosures
     // usign that type without endless loop.
     // NEEDS: @JsonBackReference on private EnclosureType enclosureType;
