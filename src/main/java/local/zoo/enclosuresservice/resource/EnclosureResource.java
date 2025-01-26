@@ -40,7 +40,7 @@ public class EnclosureResource {
     }
 
     @GET
-    @Path("bases/{enclosureId}")
+    @Path("/{enclosureId}/base")
     @Produces(MediaType.APPLICATION_JSON)
     public EnclosureBase getEnclosureBaseById(@PathParam("enclosureId") UUID enclosureId) {
         return this.enclosureService.getEnclosureBaseById(enclosureId);
