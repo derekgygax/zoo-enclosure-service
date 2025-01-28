@@ -7,8 +7,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import local.zoo.enclosuresservice.dto.ModelIdentifier;
 import local.zoo.enclosuresservice.dto.enclosure.EnclosureBase;
-import local.zoo.enclosuresservice.dto.enclosure.EnclosureIdentifier;
 import local.zoo.enclosuresservice.model.Enclosure;
 import local.zoo.enclosuresservice.model.EnclosureType;
 import local.zoo.enclosuresservice.repository.EnclosureRepository;
@@ -38,8 +38,11 @@ public class EnclosureService {
         return this.enclosureRepository.listAll();
     }
 
-    public List<EnclosureIdentifier> getAllEnclosureIdentifiers() {
-        return this.enclosureRepository.findAllIdentifiers();
+    public List<ModelIdentifier> getAllEnclosureIdentifiers() {
+        List<Enclosure> enclosures = getAllEnclosures();
+        return enclosures.stream().map((Enclosure enclosure) -> {
+            return enclosure.getModelIdentifier();
+        }).toList();
     }
 
     @Transactional

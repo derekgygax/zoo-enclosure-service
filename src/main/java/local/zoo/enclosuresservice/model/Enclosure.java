@@ -22,7 +22,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.ForeignKey;
-
+import local.zoo.enclosuresservice.dto.ModelIdentifier;
 // enums
 import local.zoo.enclosuresservice.enums.EnclosureStatus;
 
@@ -78,6 +78,10 @@ public class Enclosure extends PanacheEntityBase {
         this.name = name;
         this.capacity = capacity;
         this.status = status;
+    }
+
+    public ModelIdentifier getModelIdentifier() {
+        return new ModelIdentifier(this.getId().toString(), this.getName());
     }
 
     public UUID getId() {

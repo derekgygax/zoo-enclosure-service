@@ -10,8 +10,9 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import local.zoo.enclosuresservice.service.EnclosureService;
+import local.zoo.enclosuresservice.dto.ModelIdentifier;
 import local.zoo.enclosuresservice.dto.enclosure.EnclosureBase;
-import local.zoo.enclosuresservice.dto.enclosure.EnclosureIdentifier;
+
 // models
 import local.zoo.enclosuresservice.model.Enclosure;
 
@@ -35,7 +36,7 @@ public class EnclosureResource {
     @GET
     @Path("identifiers")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<EnclosureIdentifier> getEnclosureIdentifiers() {
+    public List<ModelIdentifier> getEnclosureIdentifiers() {
         return this.enclosureService.getAllEnclosureIdentifiers();
     }
 

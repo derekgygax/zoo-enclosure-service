@@ -4,9 +4,11 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.core.MediaType;
+import local.zoo.enclosuresservice.dto.ModelIdentifier;
 import local.zoo.enclosuresservice.dto.enclosureType.EnclosureTypeBase;
 import local.zoo.enclosuresservice.model.EnclosureType;
 import local.zoo.enclosuresservice.service.EnclosureTypeService;
@@ -32,6 +34,20 @@ public class EnclosureTypeResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> getEnclosureTypeIds() {
         return this.enclosureTypeService.getAllEnclosureTypeIds();
+    }
+
+    @GET
+    @Path("/identifiers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ModelIdentifier> getAllEnclosureTypeIdentifiers() {
+        return this.enclosureTypeService.getAllEnclosureTypeIdentifiers();
+    }
+
+    @GET
+    @Path("/{enclosureTypeId}/base")
+    @Produces(MediaType.APPLICATION_JSON)
+    public EnclosureTypeBase getEnclosureTypeBaseById(@PathParam("enclosureTypeId") String enclosureTypeId) {
+        return this.enclosureTypeService.getEnclosureTypeBaseById(enclosureTypeId);
     }
 
     // POST METHODS

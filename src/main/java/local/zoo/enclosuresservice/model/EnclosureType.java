@@ -2,6 +2,8 @@ package local.zoo.enclosuresservice.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import local.zoo.enclosuresservice.dto.ModelIdentifier;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -63,6 +65,10 @@ public class EnclosureType extends PanacheEntityBase {
         // Ensure the id for the type is stored in lowercase
         this.id = id.toLowerCase();
         this.description = description;
+    }
+
+    public ModelIdentifier getModelIdentifier() {
+        return new ModelIdentifier(this.getId().toString(), this.getId().toString());
     }
 
     public String getId() {

@@ -3,6 +3,7 @@ package local.zoo.enclosuresservice.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import local.zoo.enclosuresservice.dto.ModelIdentifier;
 import local.zoo.enclosuresservice.dto.enclosureType.EnclosureTypeBase;
 import local.zoo.enclosuresservice.model.EnclosureType;
 import local.zoo.enclosuresservice.repository.EnclosureTypeRepository;
@@ -33,6 +34,17 @@ public class EnclosureTypeService {
 
     public List<String> getAllEnclosureTypeIds() {
         return this.enclosureTypeRepository.findAllIds();
+    }
+
+    public List<ModelIdentifier> getAllEnclosureTypeIdentifiers() {
+        List<EnclosureType> enclosureTypes = getAllEnclosureTypes();
+        return enclosureTypes.stream().map((EnclosureType enclosureType) -> {
+            return enclosureType.getModelIdentifier();
+        }).toList();
+    }
+
+    public EnclosureTypeBase getEnclosureTypeBaseById(String id) {
+        return this.enclosureTypeRepository.findEnclosureTypeBaseById(id);
     }
 
     // You need the Transactional so that something happens in the DB!!!
