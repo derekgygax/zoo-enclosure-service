@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 // import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -39,6 +41,7 @@ public class Enclosure extends PanacheEntityBase {
     private String name;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "enclosure_type_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT))
     // so that the endpoint for enclosures-types can get the enclosures
     // usign that type without endless loop.

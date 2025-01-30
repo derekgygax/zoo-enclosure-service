@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import local.zoo.enclosuresservice.dto.ModelIdentifier;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,7 +37,6 @@ public class EnclosureType extends PanacheEntityBase {
     // Use Instant for UTC timestamps
     private Instant updatedAt;
 
-    @OnDelete(action = OnDeleteAction.RESTRICT)
     @OneToMany(mappedBy = "enclosureType", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH }, orphanRemoval = true)
     // This is so that the endpoint for enclosures-types can get the enclosures
