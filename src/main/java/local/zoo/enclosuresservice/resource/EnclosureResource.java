@@ -27,7 +27,7 @@ public class EnclosureResource {
 
     // GET METHODS
     @GET
-    @Path("/")
+    @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Enclosure> getEnclosures() {
         return this.enclosureService.getAllEnclosures();
@@ -49,7 +49,7 @@ public class EnclosureResource {
 
     // POST METHODS
     @POST
-    @Path("/")
+    @Path("")
     @Consumes(MediaType.APPLICATION_JSON)
     public void addEnclosure(EnclosureBase enclosureBase) {
         this.enclosureService.addEnclosure(enclosureBase);

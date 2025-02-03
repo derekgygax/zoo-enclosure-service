@@ -23,7 +23,7 @@ public class EnclosureTypeResource {
 
     // GET METHODS
     @GET
-    @Path("/")
+    @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public List<EnclosureType> getEnclosureTypes() {
         return this.enclosureTypeService.getAllEnclosureTypes();
@@ -52,7 +52,7 @@ public class EnclosureTypeResource {
 
     // POST METHODS
     @POST
-    @Path("/")
+    @Path("")
     @Consumes(MediaType.APPLICATION_JSON)
     public void addEnclosureType(EnclosureTypeBase enclosureTypeBase) {
         this.enclosureTypeService.addEnclosureType(enclosureTypeBase);
